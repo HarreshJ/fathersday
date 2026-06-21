@@ -1,0 +1,454 @@
+/* =================================================================
+   FATHER'S DAY SITE — shared styles
+   Design concept: photographs displayed like framed prints on a
+   mantel shelf. The "glass" hover effect is literal — it mimics the
+   glass pane of a picture frame catching the light when you look
+   at it. Edit the CSS variables below to retheme the whole site.
+   ================================================================= */
+
+:root {
+  /* ---- Color tokens ---- */
+  --ink: #14181f;          /* deep background */
+  --ink-soft: #1c222c;      /* panel background, slightly lifted */
+  --paper: #f3ecdd;         /* warm cream for light text/sections */
+  --paper-dim: #c9bfa9;     /* muted cream for secondary text */
+  --gold: #c9a463;          /* brass / frame accent */
+  --gold-bright: #e9cf94;   /* brighter brass for glints + hover */
+  --clay: #a1583a;          /* warm secondary accent */
+  --line: rgba(201, 164, 99, 0.25);
+
+  /* ---- Type tokens ---- */
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-utility: "Space Mono", "Courier New", monospace;
+
+  /* ---- Layout tokens ---- */
+  --max-width: 1100px;
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ---------------------------------------------------------------
+   NAV — present on every page, always links home
+   --------------------------------------------------------------- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(20, 24, 31, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand .mark {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px var(--gold-bright);
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav-links a {
+  color: var(--paper-dim);
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.nav-links a:hover { color: var(--gold-bright); }
+
+.nav-links a.is-current {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold);
+}
+
+/* ---------------------------------------------------------------
+   HERO
+   --------------------------------------------------------------- */
+.hero {
+  padding: 96px 0 64px;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 18px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+}
+
+.hero p.lede {
+  max-width: 540px;
+  margin: 0 auto;
+  color: var(--paper-dim);
+  font-size: 1.05rem;
+}
+
+/* ---------------------------------------------------------------
+   MANTEL — the two-frame picture row on the home page
+   --------------------------------------------------------------- */
+.mantel {
+  padding: 20px 0 110px;
+}
+
+.frame-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.tile {
+  display: block;
+  perspective: 900px;
+}
+
+.frame {
+  position: relative;
+  border-radius: var(--radius);
+  border: 10px solid var(--ink-soft);
+  outline: 1px solid var(--line);
+  overflow: hidden;
+  background: var(--ink-soft);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 30px 50px -25px rgba(0, 0, 0, 0.7);
+  transition: transform 0.5s ease, box-shadow 0.5s ease, border-color 0.4s ease;
+  aspect-ratio: 4 / 5;
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.5s ease;
+}
+
+/* the glass pane: a frosted, light-catching overlay sitting
+   "above" the photo, exactly as real picture-frame glass would */
+.frame .glass {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.06) 35%,
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 255, 255, 0.16) 100%
+  );
+  backdrop-filter: blur(3px) saturate(115%);
+  -webkit-backdrop-filter: blur(3px) saturate(115%);
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+/* the glint: a diagonal streak of light that sweeps across the
+   glass on hover, like glass tilting to catch the light */
+.frame::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 45%;
+  height: 220%;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 48%,
+    transparent 100%
+  );
+  transform: rotate(8deg) translateX(-120%);
+  transition: transform 0.85s ease;
+  pointer-events: none;
+}
+
+.tile:hover .frame,
+.tile:focus-visible .frame {
+  transform: translateY(-6px) rotateX(2deg);
+  border-color: var(--gold);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 40px 60px -25px rgba(0, 0, 0, 0.8),
+    0 0 0 1px var(--line);
+}
+
+.tile:hover .frame .glass,
+.tile:focus-visible .frame .glass {
+  opacity: 1;
+}
+
+.tile:hover .frame::after,
+.tile:focus-visible .frame::after {
+  transform: rotate(8deg) translateX(220%);
+}
+
+.tile:hover .frame img,
+.tile:focus-visible .frame img {
+  transform: scale(1.04);
+}
+
+.plate {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.plate .name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  color: var(--paper);
+}
+
+.plate .go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-family: var(--font-utility);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.tile:hover .plate .go,
+.tile:focus-visible .plate .go {
+  color: var(--gold-bright);
+  gap: 10px;
+}
+
+.shelf {
+  max-width: 760px;
+  margin: 56px auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------
+   TRIBUTE PAGE LAYOUT
+   --------------------------------------------------------------- */
+.tribute {
+  padding: 64px 0 120px;
+}
+
+.tribute-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.tribute .frame {
+  aspect-ratio: 4 / 5;
+  border-width: 12px;
+}
+
+.tribute .frame .glass { opacity: 0.35; }
+
+.tribute-copy h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  margin: 0 0 6px;
+}
+
+.tribute-copy .role {
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 28px;
+}
+
+.tribute-copy p {
+  color: var(--paper-dim);
+  max-width: 540px;
+}
+
+.tribute-copy .edit-note {
+  margin-top: 28px;
+  padding: 14px 16px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-utility);
+  font-size: 0.75rem;
+  color: var(--gold);
+  background: rgba(201, 164, 99, 0.06);
+}
+
+.quote-block {
+  margin: 36px 0;
+  padding-left: 22px;
+  border-left: 2px solid var(--gold);
+}
+
+.quote-block p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--paper);
+  margin: 0;
+}
+
+.back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  padding: 12px 22px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.back-home:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------
+   FOOTER — second route back to home from every page
+   --------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0;
+}
+
+.site-footer .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--font-utility);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--paper-dim);
+}
+
+.site-footer a {
+  color: var(--gold);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+
+.site-footer a:hover { border-color: var(--gold); }
+
+/* ---------------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .frame-row {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    max-width: 360px;
+  }
+
+  .tribute-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tribute .frame {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .nav-links { gap: 18px; }
+
+  .hero { padding: 72px 0 48px; }
+}
+
+@media (max-width: 380px) {
+  .nav-links { gap: 14px; font-size: 0.66rem; }
+  .brand { font-size: 1.1rem; }
+}
+
+/* ---------------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .frame img,
+  .frame .glass,
+  .frame::after,
+  .plate .go,
+  .back-home {
+    transition: none !important;
+  }
+}
